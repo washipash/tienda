@@ -1,25 +1,69 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import "../styles/Auth.css"; // Importa los estilos
 
 const Register = () => {
+  const [name, setName] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { register } = useAuth();
   const navigate = useNavigate();
-  const [user, setUser] = useState({ name: "", email: "", password: "" });
 
   const handleRegister = (e) => {
     e.preventDefault();
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    users.push(user);
-    localStorage.setItem("users", JSON.stringify(users));
-    navigate("/login");
+    const success = register(name, lastname, email, password);
+    if (success) {
+      alert("Registro exitoso, ahora puedes iniciar sesión.");
+      navigate("/");
+    } else {
+      alert("El correo ya está registrado.");
+    }
   };
 
   return (
-    <form onSubmit={handleRegister} className="p-4">
-      <input type="text" placeholder="Nombre" value={user.name} onChange={e => setUser({ ...user, name: e.target.value })} required />
-      <input type="email" placeholder="Email" value={user.email} onChange={e => setUser({ ...user, email: e.target.value })} required />
-      <input type="password" placeholder="Contraseña" value={user.password} onChange={e => setUser({ ...user, password: e.target.value })} required />
-      <button type="submit">Registrarse</button>
-    </form>
+    <div className="auth-container">
+      <div className="auth-card">
+        <h2>Crear Cuenta</h2>
+        <form onSubmit={handleRegister}>
+          <input
+            type="text"
+            placeholder="Nombre"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Apellido"
+            value={lastname}
+            onChange={(e) => setLastname(e.target.value)}
+            required
+          />
+          <input
+            type="email"
+            placeholder="Correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Registrarse</button>
+        </form>
+        <p>¿Ya tienes cuenta?  
+          <button className="link-btn" onClick={() => navigate("/")}>
+            Inicia sesión aquí
+          </button>
+        </p>
+      </div>
+    </div>
   );
 };
 

@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Estilos globales */
 body {
   margin: 0;
@@ -9,4 +13,42 @@ body {
 .dark-mode {
   background-color: #333;
   color: white;
+}
+
+.register-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.register-btn:hover {
+  color: #0056b3;
+}
+
+button {
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+/* Estilos para que los productos se alineen horizontalmente y puedan hacer scroll */
+.flex.overflow-x-auto {
+  white-space: nowrap;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
+}
+
+.flex.overflow-x-auto::-webkit-scrollbar {
+  height: 6px;
+}
+
+.flex.overflow-x-auto::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
 }

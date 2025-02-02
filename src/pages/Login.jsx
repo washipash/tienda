@@ -1,39 +1,52 @@
-import { useState, useContext } from "react";
-import AuthContext from "../context/AuthContext";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth"; 
+import "../styles/Auth.css";
 
 const Login = () => {
-  const { user, login } = useContext(AuthContext);
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  // Si el usuario ya está logueado, lo redirigimos a home
-  if (user) {
-    navigate("/home"); 
-    return null; // Evitamos que renderice el formulario vacío
-  }
-
-  const handleSubmit = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    const isValid = login(email, password);
-    if (isValid) {
+    const user = login(email, password);
+    if (user) {
       navigate("/home");
     } else {
-      setError("Credenciales incorrectas. Intenta de nuevo.");
+      alert("Credenciales incorrectas");
     }
   };
 
   return (
-    <div>
-      <h2>Iniciar Sesión</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Correo" required />
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Contraseña" required />
-        <button type="submit">Ingresar</button>
-      </form>
+    <div className="auth-container">
+      <div className="auth-card">
+        <h2>Iniciar Sesión</h2>
+        <form onSubmit={handleLogin}>
+          <input
+            type="email"
+            placeholder="Correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Ingresar</button>
+        </form>
+        <p>
+          ¿No tienes cuenta?{" "}
+          <button className="link-btn" onClick={() => navigate("/register")}>
+            Regístrate aquí
+          </button>
+        </p>
+      </div>
     </div>
   );
 };
